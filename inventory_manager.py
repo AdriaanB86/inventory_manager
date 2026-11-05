@@ -16,15 +16,28 @@ class Product:
         self.quantity = self.quantity - amount
         return True
 
-product1 = Product("Coffee", 45.0, 20)
-product2 = Product("Tea", 30.50, 12)
-product1.add_stock(10)
 
-if product2.remove_stock(5):
-    print("Sold 5 tea")
-else:
-    print("Not enough tea in stock")
+def list_products(products):
+    for number, product in enumerate(products, start=1):
+        print(f"{number}. {product.name}: R{product.price:.2f} - {product.quantity} in stock")
 
-print(f"Coffee stock value: R{product1.total_value():.2f}")
-print(f"{product1.name}: R{product1.price:.2f}, {product1.quantity} in stock")
-print(f"{product2.name}: R{product2.price:.2f}, {product2.quantity} in stock")
+
+products = [
+    Product("Coffee", 45.0, 20),
+    Product("Tea", 30.50, 12),
+]
+
+while True:
+    print()
+    print("=== Inventory Manager ===")
+    print("1. List products")
+    print("2. Quit")
+    choice = input("Choose an option: ")
+
+    if choice == "1":
+        list_products(products)
+    elif choice == "2":
+        print("Goodbye!")
+        break
+    else:
+        print("Invalid option, please try again.")
