@@ -4,9 +4,16 @@ class Product:
         self.price = price
         self.quantity = quantity
 
+    def total_value(self):
+        return self.price * self.quantity
+    
+    def add_stock(self, amount):
+        self.quantity = self.quantity + amount
 
 product1 = Product("Coffee", 45.0, 20)
 product2 = Product("Tea", 30.50, 12)
+product1.add_stock(10)
 
-print(f"{product1.name}: R{product1.price}, {product1.quantity} in stock")
-print(f"{product2.name}: R{product2.price}, {product2.quantity} in stock")
+print(f"Coffee stock value: R{product1.total_value():.2f}")
+print(f"{product1.name}: R{product1.price:.2f}, {product1.quantity} in stock")
+print(f"{product2.name}: R{product2.price:.2f}, {product2.quantity} in stock")

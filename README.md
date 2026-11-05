@@ -6,7 +6,7 @@ A command-line program for a small shop to keep track of its products, prices an
 🚧 Work in progress
 
 ## Features
-- [ ] `Product` class with name, price and quantity
+- [x] `Product` class with name, price and quantity
 - [ ] Add and remove stock, and calculate stock value
 - [ ] Menu to add and list products
 - [ ] Save and load products from a JSON file
