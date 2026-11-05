@@ -1,3 +1,6 @@
+import json
+
+
 class Product:
     def __init__(self, name, price, quantity):
         self.name = name
@@ -15,12 +18,14 @@ class Product:
             return False
         self.quantity = self.quantity - amount
         return True
-
+    
+    
+    def to_dict(self):
+        return{"name": self.name, "price": self.price, "quantity": self.quantity}
 
 def list_products(products):
     for number, product in enumerate(products, start=1):
         print(f"{number}. {product.name}: R{product.price:.2f} - {product.quantity} in stock")
-
 
 def add_product(products):
     name = input("Product name: ")
@@ -39,10 +44,21 @@ def add_product(products):
         except ValueError:
             print("Quantity must be a whole number, e.g. 10")
 
+
     new_product = Product(name, price, quantity)
     products.append(new_product)
     print(f"✅ Added {new_product.name}: R{new_product.price:.2f} - {new_product.quantity} in stock")
-        
+
+
+def save_products(products):
+    saved_products = []
+    for product in products:
+        saved_products.append(product.to_dict())
+
+    with open("inventory.json", "w") as file:
+        json.dump(saved_products, file, indent=2)
+
+
 products = [
     Product("Coffee", 45.0, 20),
     Product("Tea", 30.50, 12),
@@ -60,10 +76,9 @@ while True:
         list_products(products)
     elif choice == "2":
         add_product(products)
-        
+        save_products(products)
     elif choice == "3":
         print("Goodbye!")
         break
-
     else:
         print("Invalid option, please try again.")
