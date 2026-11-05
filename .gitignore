@@ -1,0 +1,14 @@
+# Virtual environment (your installed packages; anyone can recreate it)
+.venv/
+
+# Python's cache files, created automatically when code runs
+__pycache__/
+
+# Secrets (not used yet, but ready in case you add any later)
+.env
+
+# The shop's product data, created by the program (private data)
+inventory.json
+
+# Personal notes for Claude (kept private)
+CLAUDE.md
