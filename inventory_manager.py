@@ -1,5 +1,6 @@
 import os
 import json
+
 LOW_LEVEL_STOCK = 5
 
 
@@ -77,6 +78,13 @@ def low_stock_report(products):
         print(f"⚠️ Low stock ({LOW_LEVEL_STOCK} or fewer):")
         for product in low_products:
             print(f"   {product.name}: {product.quantity} in stock")
+
+
+def stock_value(products):
+    total = 0
+    for product in products:
+        total = total + product.total_value()
+    return total
 
 
 def add_product(products):
@@ -196,6 +204,7 @@ while True:
 
     if choice == "1":
         list_products(products)
+        print(f"\nTotal stock value: R{stock_value(products):,.2f}")
     elif choice == "2":
         add_product(products)
         save_products(products)
