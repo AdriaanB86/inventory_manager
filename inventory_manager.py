@@ -19,13 +19,52 @@ class Product:
             return False
         self.quantity = self.quantity - amount
         return True
-    
+
+    def set_price(self, new_price):
+        if new_price <= 0:
+            return False
+        else:
+            self.price = new_price
+            return True
+
     def to_dict(self):
-        return{"name": self.name, "price": self.price, "quantity": self.quantity}
+        return {"name": self.name, "price": self.price, "quantity": self.quantity}
+
+
+def ask_float(prompt):
+    while True:
+        try:
+            number = float(input(prompt))
+        except ValueError:
+            print("Please enter a number, e.g. 12.50")
+            continue
+
+        if number > 0:
+            return number
+        print("Must be more than 0.")
+
+
+def ask_int(prompt, minimum):
+    while True:
+        try:
+            number = int(input(prompt))
+        except ValueError:
+            print("Please enter a whole number, e.g. 10")
+            continue
+
+        if number >= minimum:
+            return number
+        print(f"Must be at least {minimum}.")
+
 
 def list_products(products):
+    if not products:
+        print("No products yet.")
+        return
+
     for number, product in enumerate(products, start=1):
         print(f"{number}. {product.name}: R{product.price:.2f} - {product.quantity} in stock")
+
 
 def add_product(products):
     while True:
@@ -35,20 +74,8 @@ def add_product(products):
         else:
             break
 
-    while True:
-        try:
-            price = float(input("Price: "))
-            break
-        except ValueError:
-            print("Price must be a number, e.g. 22.99")
-
-    while True:
-        try:
-            quantity = int(input("Quantity: "))
-            break
-        except ValueError:
-            print("Quantity must be a whole number, e.g. 10")
-
+    price = ask_float("Price: ")
+    quantity = ask_int("Quantity: ", 0)
 
     new_product = Product(name, price, quantity)
     products.append(new_product)
@@ -77,8 +104,48 @@ def update_stock(products):
     list_products(products)
     index = choose_product(products)
     product = products[index]
-    print(f"You chose {product.name}")
-    
+
+    print(f"{product.name}: R{product.price:.2f} - {product.quantity} in stock")
+    print("1. Add stock")
+    print("2. Remove stock")
+    print("3. Change price")
+    print("4. Remove product")
+    print("5. Back")
+    choice = input("Choose an option: ")
+
+    if choice == "1":
+        amount = ask_int("Amount to add: ", 1)
+        product.add_stock(amount)
+        print(f"✅ {product.name} now has {product.quantity} in stock")
+
+    elif choice == "2":
+        amount = ask_int("Amount to remove: ", 1)
+        if product.remove_stock(amount):
+            print(f"✅ {product.name} now has {product.quantity} in stock")
+        else:
+            print(f"❌ Not enough stock (only {product.quantity})")
+
+    elif choice == "3":
+        new_price = ask_float("New price: ")
+        if product.set_price(new_price):
+            print(f"✅ {product.name} now costs R{product.price:.2f}")
+        else:
+            print("❌ Price must be more than 0")
+
+    elif choice == "4":
+        sure = input(f"Remove {product.name}? (y/n): ").strip().lower()
+        if sure == "y":
+            removed = products.pop(index)
+            print(f"🗑️ Removed {removed.name}")
+        else:
+            print("Nothing removed.")
+
+    elif choice == "5":
+        return
+
+    else:
+        print("Invalid option.")
+
 
 def save_products(products):
     saved_products = []
@@ -109,7 +176,7 @@ while True:
     print("=== Inventory Manager ===")
     print("1. List products")
     print("2. Add a product")
-    print("3. Update stock")
+    print("3. Update product")
     print("4. Quit")
     choice = input("Choose an option: ")
 
@@ -119,7 +186,8 @@ while True:
         add_product(products)
         save_products(products)
     elif choice == "3":
-        update_stock(products)    
+        update_stock(products)
+        save_products(products)
     elif choice == "4":
         print("Goodbye!")
         break

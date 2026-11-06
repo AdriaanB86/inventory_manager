@@ -10,7 +10,7 @@ A command-line program for a small shop to keep track of its products, prices an
 - [x] Add and remove stock, and calculate stock value
 - [x] Menu to add and list products
 - [x] Save and load products from a JSON file
-- [ ] Update stock and remove products
+- [x] Update stock and remove products
 - [ ] Low-stock report
 - [ ] Store data in a SQLite database
 - [ ] Automated tests with pytest
