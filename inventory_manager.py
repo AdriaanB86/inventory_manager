@@ -28,7 +28,12 @@ def list_products(products):
         print(f"{number}. {product.name}: R{product.price:.2f} - {product.quantity} in stock")
 
 def add_product(products):
-    name = input("Product name: ")
+    while True:
+        name = input("Product name: ").strip()
+        if not name:
+            print("Name can't be empty.")
+        else:
+            break
 
     while True:
         try:
@@ -49,6 +54,31 @@ def add_product(products):
     products.append(new_product)
     print(f"✅ Added {new_product.name}: R{new_product.price:.2f} - {new_product.quantity} in stock")
 
+
+def choose_product(products):
+    while True:
+        try:
+            product_number = int(input("Please choose product number: "))
+        except ValueError:
+            print("Please enter a number.")
+            continue
+
+        if 1 <= product_number <= len(products):
+            return product_number - 1
+        else:
+            print("No product with that number")
+
+
+def update_stock(products):
+    if not products:
+        print("No products yet.")
+        return
+
+    list_products(products)
+    index = choose_product(products)
+    product = products[index]
+    print(f"You chose {product.name}")
+    
 
 def save_products(products):
     saved_products = []
@@ -79,7 +109,8 @@ while True:
     print("=== Inventory Manager ===")
     print("1. List products")
     print("2. Add a product")
-    print("3. Quit")
+    print("3. Update stock")
+    print("4. Quit")
     choice = input("Choose an option: ")
 
     if choice == "1":
@@ -88,6 +119,8 @@ while True:
         add_product(products)
         save_products(products)
     elif choice == "3":
+        update_stock(products)    
+    elif choice == "4":
         print("Goodbye!")
         break
     else:
