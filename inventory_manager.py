@@ -1,5 +1,6 @@
 import os
 import json
+LOW_LEVEL_STOCK = 5
 
 
 class Product:
@@ -64,6 +65,18 @@ def list_products(products):
 
     for number, product in enumerate(products, start=1):
         print(f"{number}. {product.name}: R{product.price:.2f} - {product.quantity} in stock")
+
+
+def low_stock_report(products):
+    low_products = []
+    for product in products:
+        if product.quantity <= LOW_LEVEL_STOCK:
+            low_products.append(product)
+
+    if low_products:
+        print(f"⚠️ Low stock ({LOW_LEVEL_STOCK} or fewer):")
+        for product in low_products:
+            print(f"   {product.name}: {product.quantity} in stock")
 
 
 def add_product(products):
@@ -173,6 +186,7 @@ products = load_products()
 
 while True:
     print()
+    low_stock_report(products)
     print("=== Inventory Manager ===")
     print("1. List products")
     print("2. Add a product")
