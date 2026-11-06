@@ -1,3 +1,4 @@
+import os
 import json
 
 
@@ -18,7 +19,6 @@ class Product:
             return False
         self.quantity = self.quantity - amount
         return True
-    
     
     def to_dict(self):
         return{"name": self.name, "price": self.price, "quantity": self.quantity}
@@ -59,10 +59,20 @@ def save_products(products):
         json.dump(saved_products, file, indent=2)
 
 
-products = [
-    Product("Coffee", 45.0, 20),
-    Product("Tea", 30.50, 12),
-]
+def load_products():
+    if not os.path.exists("inventory.json"):
+        return []
+
+    with open("inventory.json", "r") as file:
+        data = json.load(file)
+
+    products = []
+    for item in data:
+        products.append(Product(item["name"], item["price"], item["quantity"]))
+    return products
+
+
+products = load_products()
 
 while True:
     print()
